@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Puissance 4</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <header>
@@ -98,7 +98,7 @@
             </div>
         </div>
 </main>
-<script src="connect4.js"></script>
+<script src="js/connect4.js"></script>
 <footer>
     <p>&copy; 2024 <a href="https://www.github.com/MathieuMichels">Mathieu Michels</a></p>
 </footer>
