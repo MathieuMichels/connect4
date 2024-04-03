@@ -1,0 +1,36 @@
+#game-board {
+    background: #0a4b78;
+    padding: min(1rem, 1vw, 1vh);
+}
+
+/* ajouter de l'espace entre les cellules sans utiliser flexbox */
+table#game-board {
+    border-spacing: 5px;
+}
+
+
+#game-board {
+    z-index: 1;
+    --size: min(calc(95vw / var(--COLS) - 10px), calc(81.42vh / var(--ROWS) - 10px), calc(1200px / var(--COLS) - 10px));
+    width: calc(var(--size) * var(--COLS) + 10px * (var(--COLS) ));
+    border-radius: min(5rem, 5vw, 5vh) 0 0 min(5rem, 5vw, 5vh);
+}
+
+.cell {
+    /* récuperer les valeurs de COLS et ROWS */
+    width: var(--size);
+    height: var(--size);
+    background-color: lightgrey;
+    border-radius: 50%;
+}
+
+#game-board td {
+    cursor: pointer;
+}
+
+
+@media (max-width: 1200px) and (orientation: portrait) {
+    #game-board{
+        border-radius: min(5rem, 5vw, 5vh)  min(5rem, 5vw, 5vh) 0 0;
+    }
+}

@@ -1,0 +1,81 @@
+#help-window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(600px, 95vw);
+    height: min(600px, 95vh);
+    background: #0a4b78;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    border-radius: 1rem;
+    padding: 1rem;
+    color: white;
+}
+
+#help-window .help-content {
+    overflow: auto;
+    max-height: calc(100% - 4rem);
+    padding-top: 1rem;
+}
+
+#help-window-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: row;
+    border-bottom: 1px solid white;
+    margin-bottom: 1px;
+}
+
+#help-window h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+#help-window h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+#help-window p {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    background: rgb(13, 96, 155);
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+#help-window li, #help-window ol {
+    margin-bottom: 1rem;
+    margin-left: 1.2rem;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    background: rgb(10, 87, 143);
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+#help-window ul, #help-window ol {
+    margin-bottom: 1rem;
+}
+
+
+#help-window button, #help-window select {
+    background: #f0f0f0;
+    color: #0a4b78;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+
+#help-window #help-window-header button {
+    background: #c40d0d;
+    color: white;
+}

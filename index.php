@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Puissance 4</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/gameboard.css">
+    <link rel="stylesheet" href="css/gameinfos.css">
+    <link rel="stylesheet" href="css/help.css">
 </head>
 <body>
 <header>
