@@ -241,10 +241,19 @@ window.addEventListener('zoom', setGameName);
 
 function switchHelp() {
     const help = document.getElementById('help-window');
+    const main = document.getElementsByTagName('main')[0];
+    const header = document.getElementsByTagName('header')[0];
+    const footer = document.getElementsByTagName('footer')[0];
     if (help.style.display === 'none') {
         help.style.display = 'block';
+        main.style.opacity = '0.5';
+        header.style.opacity = '0.5';
+        footer.style.opacity = '0.5';
     } else {
         help.style.display = 'none';
+        main.style.opacity = '1';
+        header.style.opacity = '1';
+        footer.style.opacity = '1';
     }
 }
 

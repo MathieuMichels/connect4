@@ -79,3 +79,18 @@
     background: #c40d0d;
     color: white;
 }
+
+#help-window ::-webkit-scrollbar {
+    width: 5px;
+}
+
+#help-window ::-webkit-scrollbar-thumb {
+    background: #f0f0f0;
+    border-radius: 1rem;
+}
+
+#help-window ::-webkit-scrollbar-track {
+    background: #0a4b78;
+    border-radius: 1rem;
+}
+
