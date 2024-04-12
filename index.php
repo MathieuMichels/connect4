@@ -162,7 +162,6 @@
                     resetColHistory();
                     updateAllGameInfos();
                     alert('Player 2 wins!');
-
                 }
                 console.log(response);
                 currentPlayer = 1;
