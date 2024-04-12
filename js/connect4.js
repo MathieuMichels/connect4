@@ -58,6 +58,8 @@ for (let i = 0; i < ROWS; i++) {
 }
 
 function addNewPiece(col, player) {
+    // si col est pas un chiffre return false
+    if(isNaN(col)) return false;
     console.log("addNewPiece", col, player);
     for (let i = ROWS - 1; i >= 0; i--) {
         if (!cells[i][col].classList.contains('player1') && !cells[i][col].classList.contains('player2')) {
@@ -152,43 +154,29 @@ function resetGame() {
 }
 
 gameBoard.addEventListener('click', (e) => {
-        if (currentPlayer === 1) {
-            let col = e.target.dataset.col;
-            if (col) {
-                col = parseInt(col);
-                if(!addNewPiece(col, currentPlayer)) return;
-                if (checkWin() === 1) {
-                    alert('Player 1 wins!');
-                    allGameDatas.players[0].victoryCount++;
-                    allGameDatas.players[1].defeatCount++;
-                    resetGame();
-                    fillBoard(allGameDatas.players[0].colsPlayed, allGameDatas.players[1].colsPlayed, 1000);
-                    resetColHistory();
-                    updateAllGameInfos();
-                } else if (checkDraw()) {
-                    alert('Draw!');
-                } else {
-                    currentPlayer = 2;
-                }
-            }
-        } else {
-            let col = Math.floor(Math.random() * COLS);
-            if(!addNewPiece(col, currentPlayer)) return;
-            if (checkWin() === 2) {
-                alert('Player 2 wins!');
-                allGameDatas.players[1].victoryCount++;
-                allGameDatas.players[0].defeatCount++;
+    if (currentPlayer === 1) {
+        let col = e.target.dataset.col;
+        if (col) {
+            col = parseInt(col);
+            if (!addNewPiece(col, currentPlayer)) return;
+            if (checkWin() === 1) {
+                allGameDatas.players[0].victoryCount++;
+                allGameDatas.players[1].defeatCount++;
                 resetGame();
                 fillBoard(allGameDatas.players[0].colsPlayed, allGameDatas.players[1].colsPlayed, 1000);
                 resetColHistory();
                 updateAllGameInfos();
+                alert('Player 1 wins!');
+
             } else if (checkDraw()) {
                 alert('Draw!');
             } else {
-                currentPlayer = 1;
+                send();
+                currentPlayer = 2;
             }
         }
     }
+}
 );
 
 

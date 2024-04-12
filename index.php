@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/infos.css">
     <link rel="stylesheet" href="css/help.css">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
 <header>
@@ -19,9 +20,11 @@
         <div class="actions">
             <button id="new-game">Nouvelle partie</button>
             <button id="reset-scores" onclick="resetGame()">Réinitialiser les scores</button>
+            <!-- slider de difficulté entre easy, medium, hard (nombre allant de 1 à 7) -->
+            <label for="difficulty">Difficulté</label><input type="range" id="difficulty" min="1" max="7" value="5">
             <button id="help" onclick="switchHelp()">Aide</button>
             <!-- list de langues (en, fr) -->
-            <select id="lang">
+            <label for="lang">Langue</label><select id="lang">
                 <option value="fr">Français</option>
                 <option value="en">English</option>
             </select>
@@ -104,6 +107,69 @@
         </div>
 </main>
 <script src="js/connect4.js"></script>
+<!--
+<script src="js/minimax.js"></script>
+-->
+<script>
+    // give board, ROWS, COLS, MAX_DEPTH to php/minimax.php in jquery and console.log response
+
+    function send() {
+        MAX_DEPTH = document.getElementById('difficulty').value;
+        let board = [];
+        for (let i = 0; i < ROWS; i++) {
+            board.push([]);
+            for (let j = 0; j < COLS; j++) {
+                if (cells[i][j].classList.contains('player1')) {
+                    board[i].push(1);
+                } else if (cells[i][j].classList.contains('player2')) {
+                    board[i].push(2);
+                } else {
+                    board[i].push(0);
+                }
+            }
+        }
+        console.log(board);
+        /*
+        rotate the board 180 degrees
+         */
+        //board = board.map(row => row.reverse());
+        board = board.reverse();
+        console.log(board);
+        $.ajax({
+            url: 'php/minimax.php',
+            type: 'POST',
+            data: {
+                board: board,
+                ROWS: ROWS,
+                COLS: COLS,
+                MAX_DEPTH: MAX_DEPTH
+            },
+            success: function (response) {
+                console.log(response);
+                response = JSON.parse(response);
+                if(!addNewPiece(response['move'], 2)){
+                    resetGame();
+                    fillBoard(allGameDatas.players[0].colsPlayed, allGameDatas.players[1].colsPlayed, 1000);
+                    resetColHistory();
+                    updateAllGameInfos();
+                    alert('Player 2 wins!');
+                }
+                if(checkWin() === 2){
+                    allGameDatas.players[1].victoryCount++;
+                    allGameDatas.players[0].defeatCount++;
+                    resetGame();
+                    fillBoard(allGameDatas.players[0].colsPlayed, allGameDatas.players[1].colsPlayed, 1000);
+                    resetColHistory();
+                    updateAllGameInfos();
+                    alert('Player 2 wins!');
+
+                }
+                console.log(response);
+                currentPlayer = 1;
+            }
+        });
+    }
+</script>
 <footer>
     <p>&copy; 2024 <a href="https://github.com/MathieuMichels/connect4" target="_blank">Mathieu Michels</a></p>
 </footer>
