@@ -200,7 +200,7 @@ function get_ai_column_move($board_input, $current_rows, $current_cols, $ai_diff
     
     $valid_locations = get_valid_locations_ai($board_input, $current_rows, $current_cols);
     if (empty($valid_locations)) {
-        error_log("AI Error: get_ai_column_move called with no valid locations.");
+        error_log("AI Error: get_ai_column_move called with no valid locations."); // Keep this error
         return null; // No valid moves left
     }
     
@@ -212,7 +212,7 @@ function get_ai_column_move($board_input, $current_rows, $current_cols, $ai_diff
     
     // Fallback if minimax returns null column but valid moves exist (e.g., only losing moves found at max depth)
     if ($result[0] === null && !empty($valid_locations)) {
-        error_log("AI Warning: Minimax returned null column, picking random valid move. Depth: $depth");
+        // error_log("AI Warning: Minimax returned null column, picking random valid move. Depth: $depth"); // Remove this warning for polish
         return $valid_locations[array_rand($valid_locations)];
     }
     

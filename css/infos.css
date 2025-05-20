@@ -1,51 +1,77 @@
+/* Game Info Section Styles */
 #game-infos {
-    background: #0a4b78;
-    padding: 1rem 2rem;
-    border-radius: 0 min(5rem, 5vw, 5vh) min(5rem, 5vw, 5vh) 0;
+    background-color: var(--color-surface); /* Use surface color for the container */
+    padding: var(--spacing-unit);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075); /* Consistent shadow */
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* Default to row for wider screens */
+    justify-content: space-around; /* Distribute player boxes */
+    gap: var(--spacing-unit);
+    width: 100%;
+    max-width: 900px; /* Max width for the info section */
+    margin-top: var(--spacing-unit); /* Space from board or other elements */
+    margin-bottom: var(--spacing-unit);
 }
 
 #game-infos .player {
-    padding: 1rem 0;
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
+    flex-basis: calc(50% - (var(--spacing-unit) / 2)); /* Each player box takes roughly half the space, considering gap */
+    max-width: calc(50% - (var(--spacing-unit) / 2));
+    padding: var(--spacing-unit);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    background-color: var(--color-background); /* Slightly different background for player cards */
+    text-align: center; /* Center text content within player box */
 }
 
-#game-infos .player:last-child {
-    border-bottom: 1px solid white;
+#game-infos .player h2 {
+    font-size: 1.25rem; /* Consistent with help window subheadings */
+    margin-top: 0;
+    margin-bottom: calc(var(--spacing-unit) * 0.75);
+    /* Player-specific text colors are already set in styles.css */
 }
 
 #game-infos .player-info {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
+    flex-direction: column; /* Stack stats vertically */
+    align-items: center; /* Center stats */
+    gap: calc(var(--spacing-unit) * 0.3);
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
 }
 
-#game-infos h2 {
-    text-align: center;
-    font-size: 1.5rem;
-    line-height: 1.5;
+#game-infos .player-info span {
+    display: block; /* Each stat on its own line */
+    font-weight: 500;
 }
+#game-infos .player-info span[data-stat="wins"]::before { content: "🏆 "; }
+#game-infos .player-info span[data-stat="defeats"]::before { content: "☠️ "; }
+#game-infos .player-info span[data-stat="nulls"]::before { content: "🟰 "; }
 
-@media (max-width: 1200px) and (orientation: portrait) {
+
+/* Responsive adjustments for game-infos */
+@media (max-width: 768px) { /* Stack player boxes on smaller screens */
     #game-infos {
-        width: min(1200px, 95vw, 95vh);
-        border-radius: 0  0 min(5rem, 5vw, 5vh)  min(5rem, 5vw, 5vh);
         flex-direction: column;
-        justify-content: center;
-        flex-wrap: wrap;
+        align-items: center; /* Center player boxes when stacked */
     }
 
     #game-infos .player {
-        border: none;
-        border-bottom: 1px solid white;
-        padding: 1rem 0;
+        flex-basis: 100%; /* Full width when stacked */
+        max-width: 100%;
+        width: 100%; /* Ensure it takes full width */
+        margin-bottom: var(--spacing-unit); /* Add margin between stacked boxes */
+    }
+    #game-infos .player:last-child {
+        margin-bottom: 0; /* No bottom margin for the last player box */
     }
 
-    #game-infos .player:last-child{
-        border-right: none;
-        border-bottom: none;
+    #game-infos .player-info {
+        flex-direction: row; /* Stats side-by-side on mobile for space */
+        justify-content: center;
+        flex-wrap: wrap; /* Allow wrapping if too many stats */
+    }
+     #game-infos .player-info span {
+        margin-right: calc(var(--spacing-unit) * 0.5); /* Space between stats */
     }
 }

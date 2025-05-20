@@ -1,62 +1,376 @@
+/* Basic Reset */
 * {
     box-sizing: border-box;
     margin: 0;
-    list-style-type: none;
     padding: 0;
+    list-style-type: none;
     -webkit-tap-highlight-color: transparent;
 }
 
+/* Variables */
 :root {
+    --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
+    --color-primary: #007bff; /* Blue */
+    --color-secondary: #6c757d; /* Gray */
+    --color-success: #28a745; /* Green */
+    --color-danger: #dc3545; /* Red */
+    --color-warning: #ffc107; /* Yellow */
+    --color-info: #17a2b8; /* Teal */
+    
+    --color-background: #f0f2f5; /* Light gray background */
+    --color-surface: #ffffff; /* For cards, modals, etc. */
+    --color-text-primary: #212529; /* Dark gray for text */
+    --color-text-secondary: #6c757d; /* Lighter gray for secondary text */
+    --color-border: #dee2e6; /* Light border color */
+
+    --color-player1: #dc3545; /* Red as in var(--color-danger) */
+    --color-player2: #ffc107; /* Yellow as in var(--color-warning) */
+    --color-board-background: #0056b3; /* Darker blue for the board itself */
+    --color-board-cell: #007bff; /* Primary blue for empty cells, lighter than board */
+
+
+    --border-radius: 0.3rem;
+    --spacing-unit: 1rem;
+
+    /* Game specific - can be overridden in board.css */
     --cols: 7;
     --rows: 6;
     --COLS: var(--cols);
     --ROWS: var(--rows);
-    --size: min(calc(95vw / var(--COLS) - 10px), calc(81.42vh / var(--ROWS) - 10px), calc(1200px / var(--COLS) - 10px));
+    /* --size will be defined in board.css or dynamically if needed */
 }
 
+/* Body & General Typography */
 body {
-    background: #123;
-}
-
-
-
-
-
-
-
-
-
-.red, .player1 {
-    background-color: red;
-}
-
-.yellow, .player2 {
-    background-color: yellow;
+    font-family: var(--font-family-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: var(--spacing-unit); /* Space for header */
+    padding-bottom: var(--spacing-unit); /* Space for footer */
 }
 
 main {
+    flex-grow: 1;
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Changed to column to stack board and lobby/infos */
+    align-items: center; /* Center content like board and lobby */
+    padding: var(--spacing-unit);
+    width: 100%;
 }
 
-[data-player="1"] {
-    color: red;
+/* Container for content centering */
+.container {
+    width: 90%;
+    max-width: 1200px; /* Max width for readability */
+    margin-left: auto;
+    margin-right: auto;
+    padding: var(--spacing-unit);
 }
 
-[data-player="2"] {
-    color: yellow;
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: calc(var(--spacing-unit) * 0.75);
+    font-weight: 600;
+    line-height: 1.2;
+}
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.5rem; }
+
+/* Links */
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+    filter: brightness(90%);
+}
+
+/* Buttons */
+button, input[type="submit"], input[type="button"] {
+    display: inline-block;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: var(--border-radius);
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    margin: calc(var(--spacing-unit) * 0.25);
+}
+
+button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+    background-color: #0056b3; /* Darker blue */
+    border-color: #0056b3;
+}
+button:active, input[type="submit"]:active, input[type="button"]:active {
+    background-color: #004085; /* Even darker blue */
+    border-color: #00376e;
+}
+button:focus, input[type="submit"]:focus, input[type="button"]:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+/* Forms */
+label {
+    display: inline-block;
+    margin-bottom: calc(var(--spacing-unit) * 0.3);
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+select,
+textarea {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+    background-color: var(--color-surface);
+    background-clip: padding-box;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    margin-bottom: calc(var(--spacing-unit) * 0.5);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--color-primary);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+input[type="range"] {
+    width: 100%; /* Make range inputs take full width */
+}
+
+input[type="checkbox"] {
+    margin-right: calc(var(--spacing-unit) * 0.3);
 }
 
 
-@media (max-width: 1200px) and (orientation: portrait) {
+/* Game Piece Colors (can be overridden or enhanced in board.css) */
+/* These .red and .yellow classes might be legacy or used by js/connect4.js's old drawing.
+   The primary styling for pieces in multiplayer will be .player1 and .player2 applied to the <td> cells. */
+.red { 
+    background-color: var(--color-player1);
+}
+.yellow {
+    background-color: var(--color-player2);
+}
+
+/* Styling for cells when they get a player class */
+#game-board td.player1 {
+    background-color: var(--color-player1);
+    /* Add other effects like gradients or shadows here if desired */
+}
+
+#game-board td.player2 {
+    background-color: var(--color-player2);
+    /* Add other effects like gradients or shadows here if desired */
+}
+
+
+/* Media Queries */
+@media (max-width: 768px) { /* Adjusted breakpoint */
+    body {
+        font-size: 15px;
+    }
     main {
-        flex-direction: column;
-        align-items: center;
+        /* flex-direction: column; // Already column, good for mobile */
+        /* align-items: center; // Already centered */
+    }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.6rem; }
+    h3 { font-size: 1.3rem; }
+
+    /* Make form elements and buttons stack more predictably if needed */
+    .actions form, .actions button { /* Example, depends on header structure */
+        display: block;
+        width: 100%;
+        margin-bottom: calc(var(--spacing-unit) * 0.5);
+    }
+    .actions input[type="text"] {
+        width: calc(100% - 1.5rem); /* Adjust if labels are inline */
     }
 }
 
+/* Specific styles for game elements if not in separate files */
+#game-creation-lobby, #quick-join-pseudo-prompt {
+    background-color: var(--color-surface);
+    padding: var(--spacing-unit);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+    margin-bottom: var(--spacing-unit);
+    width: 100%;
+    max-width: 500px; /* Limit width of lobby forms */
+}
+#game-creation-lobby h3, #quick-join-pseudo-prompt h3 {
+    margin-top: 0;
+}
+#createGameForm div, #quick-join-pseudo-prompt div {
+    margin-bottom: var(--spacing-unit);
+}
+#createGameForm label, #quick-join-pseudo-prompt label {
+    margin-right: var(--spacing-unit);
+}
+#createGameForm input[type="text"], #quick-join-pseudo-input {
+    max-width: 300px; /* Limit width of text inputs */
+}
 
+#available-games-list ul {
+    padding-left: 0;
+}
+#available-games-list li {
+    background-color: #e9ecef;
+    padding: calc(var(--spacing-unit) * 0.5);
+    border-radius: var(--border-radius);
+    margin-bottom: calc(var(--spacing-unit) * 0.5);
+    border: 1px solid var(--color-border);
+    display: flex; /* Use flexbox for better alignment */
+    justify-content: space-between; /* Space out content and button */
+    align-items: center; /* Align items vertically */
+    flex-wrap: wrap; /* Allow wrapping if content is too long */
+    gap: calc(var(--spacing-unit) * 0.5); /* Gap between content and button if they wrap */
+}
+#available-games-list li button {
+    /* margin-left: var(--spacing-unit); // No longer needed with flex */
+    /* float: right; // No longer needed with flex */
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    white-space: nowrap; /* Prevent button text from wrapping */
+    flex-shrink: 0; /* Prevent button from shrinking if text is long */
+}
 
+#turn-indicator {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    margin: var(--spacing-unit) 0;
+    color: var(--color-primary);
+}
 
+#backToLobbyBtn {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    display: block; /* Center it */
+    margin-left: auto;
+    margin-right: auto;
+}
+#backToLobbyBtn:hover {
+    background-color: #545b62;
+    border-color: #545b62;
+}
 
+/* Ensure player info sections have some spacing */
+#game-infos .player {
+    margin-bottom: var(--spacing-unit);
+    padding: var(--spacing-unit);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    background-color: var(--color-surface);
+}
+
+#game-infos .player h2 {
+    margin-top: 0;
+    margin-bottom: calc(var(--spacing-unit) * 0.5);
+}
+#game-infos .player-info span {
+    margin-right: var(--spacing-unit);
+    font-size: 0.9rem;
+}
+
+/* Specific color for player names in game-infos, if desired, overriding general [data-player] */
+#game-infos .player[data-player="1"] h2 {
+    color: #c82333; /* A specific red, distinct from piece color if needed */
+}
+#game-infos .player[data-player="2"] h2 {
+    color: #e0a800; /* A specific yellow/orange */
+}
+
+/* Help window - basic styling */
+#help-window {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+    padding: var(--spacing-unit);
+    position: fixed; /* Or absolute, depending on desired behavior */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 1050; /* Ensure it's above other content */
+}
+#help-window-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: calc(var(--spacing-unit) * 0.5);
+    margin-bottom: var(--spacing-unit);
+}
+#help-window-header h1 {
+    margin-bottom: 0;
+}
+#help-window .help-content h2 {
+    margin-top: var(--spacing-unit);
+    font-size: 1.25rem;
+}
+#help-window .help-content p, #help-window .help-content ul {
+    margin-bottom: calc(var(--spacing-unit) * 0.5);
+}
+#help-window .help-content ul {
+    padding-left: var(--spacing-unit); /* Indent list items */
+}
+
+/* Ensure footer is at the bottom */
+footer {
+    text-align: center;
+    padding: var(--spacing-unit);
+    margin-top: auto; /* Pushes footer to bottom if content is short */
+    background-color: #343a40;
+    color: white;
+}
+footer a {
+    color: #ffc107;
+}
+footer a:hover {
+    color: #fff;
+}
+
+/* Existing media query - might need adjustment based on overall design */
+@media (max-width: 1200px) and (orientation: portrait) {
+    /* main { // main is already flex-direction column
+        flex-direction: column;
+        align-items: center;
+    } */
+}

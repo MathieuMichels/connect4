@@ -1,36 +1,76 @@
+/* Game Board Styles */
 #game-board {
-    background: #0a4b78;
-    padding: min(1rem, 1vw, 1vh);
+    background-color: var(--color-board-background, #0056b3); /* Fallback if variable not defined */
+    padding: min(1rem, 1vw, 1vh); /* Dynamic padding */
+    border-spacing: 5px; /* Space between cells */
+    border-collapse: separate; /* Needed for border-spacing to work */
+    margin-left: auto; /* Center the board if main has align-items:center */
+    margin-right: auto;
+    border-radius: var(--border-radius); /* Consistent border radius */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0,0,0,0.1); /* More pronounced shadow */
 }
 
-/* ajouter de l'espace entre les cellules sans utiliser flexbox */
-table#game-board {
-    border-spacing: 5px;
-}
-
-
+/* Dynamic size calculation for cells */
 #game-board {
-    z-index: 1;
-    --size: min(calc(95vw / var(--COLS) - 10px), calc(81.42vh / var(--ROWS) - 10px), calc(1200px / var(--COLS) - 10px));
-    width: calc(var(--size) * var(--COLS) + 10px * (var(--COLS) ));
-    border-radius: min(5rem, 5vw, 5vh) 0 0 min(5rem, 5vw, 5vh);
+    --cell-spacing: 5px; /* Match border-spacing */
+    /* Adjust --size calculation to be more robust across viewport sizes */
+    --size: min(
+        calc((90vw - (var(--COLS) + 1) * var(--cell-spacing) - 2 * var(--spacing-unit)) / var(--COLS)), /* Consider main padding */
+        calc((70vh - (var(--ROWS) + 1) * var(--cell-spacing) - 2 * var(--spacing-unit)) / var(--ROWS)), /* Consider header/footer space indirectly */
+        80px /* Max cell size */
+    );
+    /* min-width removed to allow more natural shrinking based on cell content and padding */
+    /* width: calc(var(--size) * var(--COLS) + var(--cell-spacing) * (var(--COLS) - 1) + (min(1rem, 1vw, 1vh) * 2)); */ /* Let table width be determined by its content */
 }
 
-.cell {
-    /* récuperer les valeurs de COLS et ROWS */
+#game-board td { /* General style for all cells (empty or filled) */
     width: var(--size);
     height: var(--size);
-    background-color: lightgrey;
-    border-radius: 50%;
-}
-
-#game-board td {
+    background-color: var(--color-board-cell, #007bff); /* Background for empty cells */
+    border-radius: 50%; /* Makes them circular */
     cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); /* Inner shadow for depth */
+    border: 2px solid var(--color-board-background); /* Add a border to empty cells for definition */
+}
+
+/* Hover effect on empty cells */
+#game-board td:not(.player1):not(.player2):hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Slight highlight */
+    transform: scale(1.05);
+}
+
+/* Player piece styling - colors are defined in styles.css using #game-board td.playerX */
+/* Adding some depth to the pieces */
+#game-board td.player1,
+#game-board td.player2 {
+    box-shadow: inset 0 -3px 5px rgba(0,0,0,0.2), /* Inner bottom shadow for depth */
+                0 3px 5px rgba(0,0,0,0.3); /* Outer shadow for lifting effect */
+    border: none; /* Remove border for filled cells to make piece appear fuller */
+    /* Animation for dropping piece could be added here or via JS class toggle */
 }
 
 
-@media (max-width: 1200px) and (orientation: portrait) {
-    #game-board{
-        border-radius: min(5rem, 5vw, 5vh)  min(5rem, 5vw, 5vh) 0 0;
+/* Responsive adjustments for the board */
+@media (max-width: 768px) {
+    #game-board {
+        --cell-spacing: 3px; /* Reduce spacing on smaller screens */
+        border-spacing: var(--cell-spacing);
+        padding: 5px; /* Reduce padding */
+         --size: min( /* Re-calculate for smaller screens if needed */
+            calc((95vw - (var(--COLS) + 1) * var(--cell-spacing) - 2 * var(--spacing-unit)) / var(--COLS)),
+            calc((60vh - (var(--ROWS) + 1) * var(--cell-spacing) - 2 * var(--spacing-unit)) / var(--ROWS)),
+            60px /* Max cell size for mobile */
+        );
+    }
+}
+
+@media (max-width: 480px) {
+    #game-board {
+         --size: min( /* Further reduce for very small screens */
+            calc((95vw - (var(--COLS) + 1) * var(--cell-spacing) - 2 * var(--spacing-unit)) / var(--COLS)),
+            calc((60vh - (var(--ROWS) + 1) * var(--cell-spacing) - 2 * var(--spacing-unit)) / var(--ROWS)),
+            45px /* Max cell size for small mobile */
+        );
     }
 }

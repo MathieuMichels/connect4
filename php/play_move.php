@@ -8,9 +8,9 @@ $response = ["success" => false, "message" => "An unknown error occurred."];
 
 // --- Basic Validations ---
 // Initial log for play_move.php call
-if (isset($_SESSION['pseudo']) && isset($_POST['game_id']) && isset($_POST['column'])) {
-    error_log("play_move.php called by: " . $_SESSION['pseudo'] . " for game: " . $_POST['game_id'] . " column: " . $_POST['column']);
-}
+// if (isset($_SESSION['pseudo']) && isset($_POST['game_id']) && isset($_POST['column'])) {
+    // error_log("play_move.php called by: " . $_SESSION['pseudo'] . " for game: " . $_POST['game_id'] . " column: " . $_POST['column']); // Debug log removed
+// }
 
 
 if (!isset($_SESSION['pseudo'])) {
@@ -97,7 +97,7 @@ if (check_win_php($board, $user_pseudo, ROWS, COLS, WINNING_LENGTH)) {
     $games[$game_index]['status'] = 'finished';
     $games[$game_index]['winner_pseudo'] = $user_pseudo;
     $game = $games[$game_index]; // Refresh game state
-    error_log("Game " . $game['id'] . " ended. Status: " . $game['status'] . " Winner: " . $game['winner_pseudo']);
+    // error_log("Game " . $game['id'] . " ended. Status: " . $game['status'] . " Winner: " . $game['winner_pseudo']); // Debug log removed
     
     // Determine loser
     $loser_pseudo = '';
@@ -116,7 +116,7 @@ if (check_win_php($board, $user_pseudo, ROWS, COLS, WINNING_LENGTH)) {
 } elseif (check_draw_php($board)) {
     $games[$game_index]['status'] = 'finished_draw';
     $game = $games[$game_index]; // Refresh game state
-    error_log("Game " . $game['id'] . " ended. Status: " . $game['status']);
+    // error_log("Game " . $game['id'] . " ended. Status: " . $game['status']); // Debug log removed
     if (isset($game['players']) && is_array($game['players']) && count($game['players']) == 2) {
         // For a draw, order doesn't matter for update_stats_php as it checks both
         update_stats_php($game['players'][0], $game['players'][1], true);
@@ -134,7 +134,7 @@ if (check_win_php($board, $user_pseudo, ROWS, COLS, WINNING_LENGTH)) {
     }
     $games[$game_index]['current_turn_pseudo'] = $next_player_pseudo;
     $game = $games[$game_index]; // Refresh game state
-    error_log("Human move processed. Board: " . json_encode($game['currentBoard']) . " Turn: " . $game['current_turn_pseudo']);
+    // error_log("Human move processed. Board: " . json_encode($game['currentBoard']) . " Turn: " . $game['current_turn_pseudo']); // Debug log removed
 
 
     // --- AI Turn Logic (if applicable) ---
@@ -177,28 +177,28 @@ if (check_win_php($board, $user_pseudo, ROWS, COLS, WINNING_LENGTH)) {
                     $games[$game_index]['status'] = 'finished';
                     $games[$game_index]['winner_pseudo'] = "AI_PLAYER";
                     $game = $games[$game_index]; // Refresh
-                    error_log("AI move processed. AI chose col: " . $ai_column . " Board: " . json_encode($game['currentBoard']) . " Turn: " . $game['current_turn_pseudo']);
-                    error_log("Game " . $game['id'] . " ended. Status: " . $game['status'] . " Winner: " . $game['winner_pseudo']);
+                    // error_log("AI move processed. AI chose col: " . $ai_column . " Board: " . json_encode($game['currentBoard']) . " Turn: " . $game['current_turn_pseudo']); // Debug log removed
+                    // error_log("Game " . $game['id'] . " ended. Status: " . $game['status'] . " Winner: " . $game['winner_pseudo']); // Debug log removed
                     update_stats_php("AI_PLAYER", $human_player_pseudo, false); 
                 } elseif (check_draw_php($games[$game_index]['currentBoard'])) {
                     $games[$game_index]['status'] = 'finished_draw';
                     $game = $games[$game_index]; // Refresh
-                    error_log("AI move processed. AI chose col: " . $ai_column . " Board: " . json_encode($game['currentBoard']) . " Turn: " . $game['current_turn_pseudo']);
-                    error_log("Game " . $game['id'] . " ended. Status: " . $game['status']);
+                    // error_log("AI move processed. AI chose col: " . $ai_column . " Board: " . json_encode($game['currentBoard']) . " Turn: " . $game['current_turn_pseudo']); // Debug log removed
+                    // error_log("Game " . $game['id'] . " ended. Status: " . $game['status']); // Debug log removed
                     update_stats_php($human_player_pseudo, "AI_PLAYER", true);
                 } else {
                      // If game not ended by AI move, log AI move and set turn back to human
                     $games[$game_index]['current_turn_pseudo'] = $human_player_pseudo; // Switch turn back to human
                     $game = $games[$game_index]; // Refresh
-                    error_log("AI move processed. AI chose col: " . $ai_column . " Board: " . json_encode($game['currentBoard']) . " Turn: " . $game['current_turn_pseudo']);
+                    // error_log("AI move processed. AI chose col: " . $ai_column . " Board: " . json_encode($game['currentBoard']) . " Turn: " . $game['current_turn_pseudo']); // Debug log removed
                 }
             } else {
-                 error_log("AI Error: get_next_open_row_php returned -1 for a column chosen by AI. Game ID: " . $game_id . " Column: " . $ai_column);
+                 // error_log("AI Error: get_next_open_row_php returned -1 for a column chosen by AI. Game ID: " . $game_id . " Column: " . $ai_column); // Keep this specific AI error log
                  // Fallback: AI loses turn effectively, human gets turn back.
                  $games[$game_index]['current_turn_pseudo'] = $human_player_pseudo; 
             }
         } else {
-            error_log("AI Error: get_ai_column_move returned null or invalid column. Game ID: " . $game_id . " Chosen Column: " . var_export($ai_column, true));
+            // error_log("AI Error: get_ai_column_move returned null or invalid column. Game ID: " . $game_id . " Chosen Column: " . var_export($ai_column, true)); // Keep this specific AI error log
             // Fallback: AI loses turn effectively, human gets turn back.
              $games[$game_index]['current_turn_pseudo'] = $human_player_pseudo;
         }
