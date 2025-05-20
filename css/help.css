@@ -1,96 +1,115 @@
-#help-window {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: min(600px, 95vw);
-    height: min(600px, 95vh);
-    background: #0a4b78;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    border-radius: 1rem;
-    padding: 1rem;
-    color: white;
-}
+/* Help Window Specific Styles */
 
-#help-window .help-content {
-    overflow: auto;
-    max-height: calc(100% - 4rem);
-    padding-top: 1rem;
+/* The main #help-window container styling (position, basic box model, background, border, shadow) 
+   is already defined in styles.css. These rules refine the content within. */
+
+#help-window {
+    color: var(--color-text-primary); /* Ensure text color uses variable */
+    /* Other properties like width, max-width, max-height, z-index, etc., are from styles.css */
 }
 
 #help-window-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    flex-direction: row;
-    border-bottom: 1px solid white;
-    margin-bottom: 1px;
+    align-items: center; /* Vertically align title and button */
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: calc(var(--spacing-unit) * 0.75);
+    margin-bottom: var(--spacing-unit);
 }
 
-#help-window h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+#help-window-header h1 {
+    font-size: 1.75rem; /* From styles.css h2 is 1.8rem, this is slightly smaller */
+    color: var(--color-text-primary);
+    margin-bottom: 0; /* Remove default margin as flex alignment handles it */
 }
 
-#help-window h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+/* Close button in help window */
+#help-window #close-help {
+    /* Leverage general button styles by not overriding too much, or by adding a specific class.
+       For now, directly styling to match the danger button concept. */
+    background-color: var(--color-danger);
+    border-color: var(--color-danger);
+    color: #fff; /* White text on danger background */
+    padding: 0.375rem 0.75rem; /* Consistent with other smaller buttons */
+    font-size: 0.9rem;
+    /* Other properties like border-radius, cursor, transition are inherited from styles.css button rules if not overridden */
 }
 
-#help-window p {
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    line-height: 1.5;
-    background: rgb(13, 96, 155);
-    padding: 1rem;
-    border-radius: 0.5rem;
+#help-window #close-help:hover {
+    background-color: #c82333; /* Darker red for hover, from Bootstrap's danger hover */
+    border-color: #bd2130;
 }
-
-#help-window li, #help-window ol {
-    margin-bottom: 1rem;
-    margin-left: 1.2rem;
-    font-size: 1.2rem;
-    line-height: 1.5;
-    background: rgb(10, 87, 143);
-    padding: 1rem;
-    border-radius: 0.5rem;
-}
-
-#help-window ul, #help-window ol {
-    margin-bottom: 1rem;
+#help-window #close-help:focus {
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5); /* Focus shadow for danger button */
 }
 
 
-#help-window button, #help-window select {
-    background: #f0f0f0;
-    color: #0a4b78;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-weight: 600;
+#help-window .help-content {
+    overflow-y: auto; /* Ensure scrollability if content exceeds max-height */
+    /* max-height is defined in styles.css for #help-window, content area should respect that */
+    padding-right: calc(var(--spacing-unit) * 0.5); /* Space for scrollbar if it appears */
+}
+
+#help-window .help-content h2 {
+    font-size: 1.25rem; /* Consistent with styles.css h4 or a bit larger than p */
+    color: var(--color-primary); /* Use primary color for subheadings */
+    margin-top: var(--spacing-unit);
+    margin-bottom: calc(var(--spacing-unit) * 0.5);
+    padding-bottom: calc(var(--spacing-unit) * 0.25);
+    border-bottom: 1px solid var(--color-border);
+}
+
+#help-window .help-content p,
+#help-window .help-content ul,
+#help-window .help-content ol {
+    margin-bottom: var(--spacing-unit);
+    font-size: 0.95rem; /* Slightly smaller than body text for density */
+    line-height: 1.7; /* More line height for readability */
+    color: var(--color-text-secondary); /* Use secondary text color for content */
+    /* Removed background colors from p, li, ol for a cleaner look, relying on the modal's surface color. */
+}
+#help-window .help-content strong {
+    color: var(--color-text-primary); /* Primary text color for strong elements */
+    font-weight: 600; /* Standard bold */
+}
+
+#help-window .help-content ul, 
+#help-window .help-content ol {
+    padding-left: calc(var(--spacing-unit) * 1.5); /* Standard indentation for lists */
+}
+#help-window .help-content li {
+    margin-bottom: calc(var(--spacing-unit) * 0.3);
+    /* Removed background and padding from li for a cleaner list appearance */
 }
 
 
-#help-window #help-window-header button {
-    background: #c40d0d;
-    color: white;
+/* Styling for example buttons/selects within help content to match global styles */
+#help-window .help-content button, 
+#help-window .help-content select {
+    /* These will inherit from styles.css button/select rules.
+       If they are purely illustrative and not functional, they might need a specific class
+       to make them look different (e.g., disabled or just visual cues).
+       Assuming for now they should appear like functional elements for consistency. */
+    font-size: 0.875rem; /* Smaller size for example elements to distinguish them */
+    padding: 0.25rem 0.5rem;
+    margin-top: calc(var(--spacing-unit) * 0.25);
+    margin-bottom: calc(var(--spacing-unit) * 0.25);
 }
 
-#help-window ::-webkit-scrollbar {
-    width: 5px;
+/* Scrollbar styling for Webkit browsers */
+#help-window .help-content::-webkit-scrollbar {
+    width: 8px;
 }
 
-#help-window ::-webkit-scrollbar-thumb {
-    background: #f0f0f0;
-    border-radius: 1rem;
+#help-window .help-content::-webkit-scrollbar-thumb {
+    background-color: var(--color-secondary); /* Use secondary color for scrollbar thumb */
+    border-radius: var(--border-radius);
+}
+#help-window .help-content::-webkit-scrollbar-thumb:hover {
+    background-color: #5a6268; /* Darker gray, standard practice */
 }
 
-#help-window ::-webkit-scrollbar-track {
-    background: #0a4b78;
-    border-radius: 1rem;
+#help-window .help-content::-webkit-scrollbar-track {
+    background-color: var(--color-background); /* Match body background for track */
+    border-radius: var(--border-radius);
 }
-

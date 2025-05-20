@@ -87,8 +87,7 @@ if (count($games[$game_index]['players']) == 2) {
     $games[$game_index]['currentBoard'] = $empty_board;
 }
 
-// Log before writing
-error_log("User " . $user_pseudo . " joined game " . $games[$game_index]['id'] . ". Game state before save: " . json_encode($games[$game_index]));
+// error_log("User " . $user_pseudo . " joined game " . $games[$game_index]['id'] . ". Game state before save: " . json_encode($games[$game_index])); // Debug log removed
 
 if (file_put_contents($games_file, json_encode($games, JSON_PRETTY_PRINT))) {
     $response["success"] = true;

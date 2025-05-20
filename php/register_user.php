@@ -38,21 +38,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pseudo'])) {
             'nulls' => 0
         ];
         $users[] = $new_user;
-        if (file_put_contents($users_file, json_encode($users, JSON_PRETTY_PRINT))) {
-            error_log("User registered: " . $new_user['pseudo'] . " | users.json content: " . json_encode($users));
-        }
+        file_put_contents($users_file, json_encode($users, JSON_PRETTY_PRINT));
+        // error_log("User registered: " . $new_user['pseudo'] . " | users.json content: " . json_encode($users)); // Debug log removed
         $_SESSION['pseudo'] = $pseudo;
     } else {
-        // Optionally, handle pseudo already exists error, e.g., redirect with error
-        // For now, we'll just redirect to index. If pseudo exists, login should be used.
-        // Or, we can log them in if pseudo exists
-        $_SESSION['pseudo'] = $pseudo; // Log in the user if pseudo already exists
+        // Pseudo already exists, just set the session for login
+        $_SESSION['pseudo'] = $pseudo; 
     }
-    header('Location: ../index.php');
-    exit;
-} else {
-    // Redirect if not a POST request or pseudo is not set
-    header('Location: ../index.php');
-    exit;
+
+    // Handle response type based on source_request
+    if (isset($_POST['source_request']) && $_POST['source_request'] == 'js_quick_join') {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'pseudo' => $_SESSION['pseudo']]);
+        exit;
+    } else {
+        header('Location: ../index.php');
+        exit;
+    }
+
+} else { // Not a POST request or pseudo not set
+    if (isset($_POST['source_request']) && $_POST['source_request'] == 'js_quick_join') {
+        header('Content-Type: application/json');
+        // Check if it's just a missing pseudo for a quick_join request
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['pseudo'])) {
+             echo json_encode(['success' => false, 'message' => 'Pseudo not provided for quick join.']);
+        } else {
+             echo json_encode(['success' => false, 'message' => 'Invalid request for quick join.']);
+        }
+        exit;
+    } else {
+        // Standard redirect for other cases
+        header('Location: ../index.php');
+        exit;
+    }
 }
 ?>

@@ -143,7 +143,7 @@ function update_stats_php($player1_pseudo, $player2_pseudo, $is_draw = false) {
     // Log before writing, ensuring $users is captured before modification for the log.
     // Note: $users array is modified in place in the loop above. To log "before", this log should ideally be earlier,
     // or we log the state of specific users. For simplicity, logging the current state of $users.
-    error_log("Updating stats. Winner: " . $log_winner . " Loser: " . $log_loser . " Is Draw: " . ($is_draw ? "Yes" : "No") . " | users.json state for update: " . json_encode($users));
+    // error_log("Updating stats. Winner: " . $log_winner . " Loser: " . $log_loser . " Is Draw: " . ($is_draw ? "Yes" : "No") . " | users.json state for update: " . json_encode($users)); // Debug log removed
 
 
     if (($player1_found || $player1_pseudo === 'AI_PLAYER' || $player1_pseudo === 'IA') && ($player2_found || $player2_pseudo === 'AI_PLAYER' || $player2_pseudo === 'IA')) {
@@ -151,7 +151,7 @@ function update_stats_php($player1_pseudo, $player2_pseudo, $is_draw = false) {
         return file_put_contents($users_file, json_encode($users, JSON_PRETTY_PRINT));
     }
     
-    error_log("Stats update skipped: One or both players not found (and not AI_PLAYER/IA). Player1: " . $player1_pseudo . " Player2: " . $player2_pseudo);
+    // error_log("Stats update skipped: One or both players not found (and not AI_PLAYER/IA). Player1: " . $player1_pseudo . " Player2: " . $player2_pseudo); // Debug log removed
     return false; // One or both players not found (and not AI_PLAYER/IA)
 }
 

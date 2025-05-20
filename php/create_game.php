@@ -66,14 +66,26 @@ if ($play_against_ai) {
 $games[] = $new_game;
 
 if (file_put_contents($games_file, json_encode($games, JSON_PRETTY_PRINT))) {
-    // Successfully saved
-    error_log("Game created: " . $new_game['id'] . " by " . $new_game['game_creator_pseudo'] . " | Type: " . ($play_against_ai ? "AI" : "Human") . " | games.json content: " . json_encode($games));
-    header('Location: ../index.php?game_created=' . $game_id);
-    exit;
+    // error_log("Game created: " . $new_game['id'] . " by " . $new_game['game_creator_pseudo'] . " | Type: " . ($play_against_ai ? "AI" : "Human") . " | games.json content: " . json_encode($games)); // Debug log removed
+
+    if (isset($_POST['source_request']) && $_POST['source_request'] == 'js_default_ai') {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'game' => $new_game]);
+        exit;
+    } else {
+        header('Location: ../index.php?game_created=' . $game_id);
+        exit;
+    }
 } else {
     // Handle file write error
-    error_log("Error creating game: Failed to write to games.json. Game ID attempted: " . $game_id);
-    header('Location: ../index.php?error=failed_to_save_game');
-    exit;
+    // error_log("Error creating game: Failed to write to games.json. Game ID attempted: " . $game_id); // Debug log removed
+    if (isset($_POST['source_request']) && $_POST['source_request'] == 'js_default_ai') {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'message' => 'Failed to save game data.']);
+        exit;
+    } else {
+        header('Location: ../index.php?error=failed_to_save_game');
+        exit;
+    }
 }
 ?>
