@@ -1,0 +1,146 @@
+/* Basic Reset / Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 1em 0;
+    text-align: center;
+    width: 100%;
+}
+
+header h1 {
+    margin: 0;
+}
+
+main {
+    flex: 1;
+    width: 90%;
+    max-width: 800px; /* Max width for the game area */
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+footer {
+    text-align: center;
+    padding: 1em 0;
+    background-color: #333;
+    color: white;
+    width: 100%;
+}
+
+/* Game Info Area */
+#game-info {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+#player1-info, #player2-info {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+#turn-indicator {
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px; /* Added for spacing */
+    width: 100%; /* Take full width of its flex parent initially */
+}
+
+
+/* Game Board Container - Basic placeholder */
+#game-board-container {
+    display: grid; /* Will be set by JS */
+    /* grid-template-columns: repeat(7, 1fr); /* Example, will be set by JS */
+    /* grid-gap: 5px; */
+    width: fit-content; /* Adjust to content */
+    margin: 20px auto; /* Center the board */
+    padding: 10px;
+    background-color: #4a90e2; /* Connect 4 blue */
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* Individual cell styling - to be applied by JS */
+.board-cell {
+    width: 50px; /* Example size */
+    height: 50px; /* Example size */
+    background-color: white;
+    border-radius: 50%; /* Circular holes */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #337ab7; /* Border for the hole */
+}
+
+/* Player piece styling - to be applied by JS */
+.player1-piece {
+    background-color: #ff4136; /* Red */
+    /* width: 80%; height: 80%; border-radius: 50%; */ /* Already handled by .board-cell if piece is inside */
+}
+
+.player2-piece {
+    background-color: #ffff00; /* Yellow */
+    /* width: 80%; height: 80%; border-radius: 50%; */
+}
+
+
+/* Game Controls */
+#game-controls {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#game-controls button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#game-controls button:hover {
+    background-color: #4cae4c;
+}
+
+/* Message Area */
+#message-area {
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    min-height: 20px; /* So it doesn't collapse */
+}
+
+.message-success {
+    color: green;
+}
+
+.message-error {
+    color: red;
+}
+
+.message-info {
+    color: blue;
+}
